@@ -131,16 +131,18 @@ OpenGrok RESTful API documentation. The following endpoints are accessible under
 
 ### marks project as indexed [PUT]
 
-+ Response 222
++ Response 204
 
 ## Project metadata [/projects/{project}/property/{field}]
 
 ### sets property field for the project [PUT]
 
-+ Response 222
++ Request
   + Body
   
             body – string representation of the value to set
+
++ Response 204
 
 ### returns the field value [GET]
 
