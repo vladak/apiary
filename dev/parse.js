@@ -4,12 +4,14 @@ var fs = require('fs');
 new Promise(function(resolve, reject) {
         fs.readFile('apiary.apib', 'utf8', (error, data) => {
             if (error) {
+                console.error(error);
                 reject(1);
             }
 
             resolve(data);
         });
     })
+    .catch(process.exit)
     .then(function(data) {
         return new Promise((resolve, reject) => {
             drafter.parse(data, function(error, result) {
