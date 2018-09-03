@@ -1,2 +1,3 @@
 
-Sample Apiary repo
+Sample Apiary repo with checker called by Travis
+
