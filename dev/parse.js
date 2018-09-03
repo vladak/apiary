@@ -1,27 +1,34 @@
 var drafter = require('drafter');
 var fs = require('fs');
 
-try {
-    var data = fs.readFileSync('apiary.apib', 'utf8');
+new Promise(function(resolve, reject) {
+        fs.readFile('apiary.apib', 'utf8', (error, data) => {
+            if (error) {
+                reject(1);
+            }
 
-    drafter.parse(data, function(error, result) {
-        if (error) {
-          console.log(error);
-          process.exit(1);
-        } else {
-	  for (x in result.content) {
-	      var d = result.content[x];
-	      // console.log(d);
-	      if (d['element'] != 'category') {
-	          console.log('Error:\n', d);
-		  process.exit(1);
-	      }
-	  }
-        }
+            resolve(data);
+        });
+    })
+    .then(function(data) {
+        return new Promise((resolve, reject) => {
+            drafter.parse(data, function(error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve(1);
+                } else {
+                    for (x in result.content) {
+                        var d = result.content[x];
+                        // console.log(d);
+                        if (d['element'] != 'category') {
+                            console.log('Error:\n', d);
+                            resolve(1);
+                        }
+                    }
+                }
 
-        console.log('Blueprint check successful');
-    });
-} catch(e) {
-    console.log('Error:', e.stack);
-    process.exit(1);
-}
+                resolve(0);
+            });
+        });
+    })
+    .then(process.exit);
