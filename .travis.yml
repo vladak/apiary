@@ -12,4 +12,4 @@ matrix:
       osx_image: xcode8.3
 before_install: dev/before_install
 script:
-  - node parse.js
+  - node dev/parse.js
