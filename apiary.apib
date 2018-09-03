@@ -1,79 +1,174 @@
 HIFORMAT: 1A
 
-# vladimirkotal
+# OpenGrok
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+OpenGrok RESTful API documentation. The following endpoints are accessible under `/api/v1`
 
-## Questions Collection [/answers]
+## Configuration [/configuration]
 
-### List All Questions [GET]
+### return XML representation of configuration [GET]
+
++ Response 200 (application/xml)
+
+    ```
+    <?xml version="1.0" encoding="UTF-8"?>
+    <java version="1.8.0_172" class="java.beans.XMLDecoder">
+     <object class="org.opengrok.indexer.configuration.Configuration" id="Configuration0">
+      <void property="allowLeadingWildcard">
+       <boolean>true</boolean>
+      </void>
+     </object>
+    </java>
+    ```
+
+### sets configuration from XML representation [POST]
+
++ Request (application/xml)
+
+    ```
+    <?xml version="1.0" encoding="UTF-8"?>
+    <java version="1.8.0_172" class="java.beans.XMLDecoder">
+     <object class="org.opengrok.indexer.configuration.Configuration" id="Configuration0">
+      <void property="allowLeadingWildcard">
+       <boolean>true</boolean>
+      </void>
+     </object>
+    </java>
+    ```
+
++ Response 201 (application/json)
+
+## Configuration field [/configuration/{field}{?reindex}]
+
+### returns specific configuration field [GET]
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+### sets specific configuration field [PUT]
 
-### Create a New Question [POST]
++ Parameters
+  + reindex (boolean) - specifies if the underlying data were also reindexed (refreshes some searchers and additional data structures)
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
++ Request (application/text)
+
+        string value of the field to set
+
++ Response 204
+
+## Authorization framework reload [/configuration/authorization/reload]
+
+### reloads authorization framework [POST]
+
++ Request (application/text)
+
++ Response 204
+
+## Messages [/messages{?tag}]
+
+### adds message to a system [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+          "tags": ["main"],
+          "cssClass": "cssClass",
+          "text":"test message",
+          "duration":"PT10M"
         }
 
-+ Response 201 (application/json)
++ Response 204
 
-    + Headers
+### deletes messages with specified tag [DELETE]
 
-            Location: /answers/2
++ Parameters
+  + tag (string) - tag
 
-    + Body
++ Response 222
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
-            }
+### returns all messages with specified tag [GET]
+
++ Parameters
+  + tag (string) - tag
+
++ Response 222 (application/json)
+
+        [
+          {
+            "acceptedTime": "2018-06-28T17:49:01.793Z",
+            "message": {
+              "tags": ["main"],
+              "cssClass": "cssClass",
+              "text": "test message",
+              "duration": "PT10M"
+            },
+            "expirationTime": "2018-06-28T17:59:01.793Z",
+            "expired":false
+          }
+        ]
+        
+## Projects [/projects]
+
+### returns a list of projects [GET]
+
++ Response 200 (application/text)
+
+### add project [POST]
+
++ Request (application/text)
+  + Body
+  
+            text/plain name of the project
+
++ Response 222
+
+## Project management [/projects/{project}]
+
+### delete project [DELETE]
+
++ Response 222
+
+## Project management [/projects/{project}/indexed]
+
+### marks project as indexed [PUT]
+
++ Response 222
+
+## Project metadata [/projects/{project}/property/{field}]
+
+### sets property field for the project [PUT]
+
++ Response 222
+  + Body
+  
+            body – string representation of the value to set
+
+### returns the field value [GET]
+
++ Response 200 (application/json)
+        
+## Project repositories [/projects/{project}/repositories]
+
+### returns a list of repositories for the specified project [GET]
+
++ Response 200 (application/json)
+  + Body
+
+            ["/opengrok-master/testdata/repositories/teamware","/opengrok-master/testdata/sources/rfe2575","/opengrok-master/testdata/repositories/rcs_test","/opengrok-master"]
+
+## Repository type [/projects/{project}/repositories/type]
+
+### returns types of project repositories as JSON list [GET]
+
++ Response 200 (application/json)
+  + Body
+  
+            ["RCS","git","SCCS"]
+
+## Project indexed flag [/projects/indexed]
+
+### returns a list of indexed projects [GET]
+
++ Response 200 (application/json)
+  + Body
+  
+            ["sc-2","sc-1"]
