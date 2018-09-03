@@ -23,3 +23,5 @@ try {
     console.log('Error:', e.stack);
     process.exit(1);
 }
+
+console.log('Blueprint check successful');
