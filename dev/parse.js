@@ -16,6 +16,7 @@ new Promise(function(resolve, reject) {
                 if (error) {
                     console.log(error);
                     resolve(1);
+                    return;
                 } else {
                     for (x in result.content) {
                         var d = result.content[x];
@@ -23,10 +24,12 @@ new Promise(function(resolve, reject) {
                         if (d['element'] != 'category') {
                             console.log('Error:\n', d);
                             resolve(1);
+                            return;
                         }
                     }
                 }
 
+                console.log("Blueprint check passed");
                 resolve(0);
             });
         });
