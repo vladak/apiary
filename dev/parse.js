@@ -11,7 +11,6 @@ new Promise(function(resolve, reject) {
             resolve(data);
         });
     })
-    .catch(process.exit)
     .then(function(data) {
         return new Promise((resolve, reject) => {
             drafter.parse(data, function(error, result) {
@@ -36,4 +35,5 @@ new Promise(function(resolve, reject) {
             });
         });
     })
-    .then(process.exit);
+    .then(process.exit)
+    .catch(process.exit);
