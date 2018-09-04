@@ -155,7 +155,10 @@ OpenGrok RESTful API documentation. The following endpoints are accessible under
 + Response 200 (application/json)
   + Body
 
-            ["/opengrok-master/testdata/repositories/teamware","/opengrok-master/testdata/sources/rfe2575","/opengrok-master/testdata/repositories/rcs_test","/opengrok-master"]
+            ["/opengrok-master/testdata/repositories/teamware",
+             "/opengrok-master/testdata/sources/rfe2575",
+             "/opengrok-master/testdata/repositories/rcs_test",
+             "/opengrok-master"]
 
 ## Repository type [/projects/{project}/repositories/type]
 
@@ -175,4 +178,51 @@ OpenGrok RESTful API documentation. The following endpoints are accessible under
   
             ["sc-2","sc-1"]
             
-API
+## Repository type [/repositories/type{?repository}]
+
+### return type of the repository [GET]
+
+The repository path is relative to source root, starting with slash.
+Repository type is separated from the repository path with a colon.
+
++ Response 200 (text/plain)
+  + Body
+
+            /opengrok-master:git
+
++ Parameters
+  + repository - repository for which to return type
+
+## Search [/search{?full,def,symbol,path,hist,type,projects,maxresults,start}]
+
+## return search results [GET]
+
++ Parameters
+  + full (optional, string) – full search field value to search for
+  + def (optional, string) – definition field value to search for
+  + symbol (optional, string) – symbol field value to search for
+  + path (optional, string) – file path field value to search for
+  + hist (optional, string) – history field value to search for
+  + type (optional, string) – type of the files to search for
+  + projects (optional, string) – projects to search in
+  + maxresults (optional, string) – maximum number of documents whose hits will be returned
+  + start (optional, string) – start index from which to return results
+
++ Response 200 (application/json)
+  + Body
+  
+        {
+          "time": 13,
+          "resultCount": 35,
+          "startDocument": 0,
+          "endDocument": 0,
+          "results": {
+            "/opengrok/test/org/opensolaris/opengrok/history/hg-export-renamed.txt": [{
+              "line": "# User Vladimir <b>Kotal</b> &lt;Vladimir.<b>Kotal</b>@oracle.com&gt;",
+              "lineNumber": "19"
+            },{
+              "line": "# User Vladimir <b>Kotal</b> &lt;Vladimir.<b>Kotal</b>@oracle.com&gt;",
+              "lineNumber":"29"
+            }]
+          }
+        }
