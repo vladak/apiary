@@ -114,20 +114,20 @@ OpenGrok RESTful API documentation. The following endpoints are accessible under
 
 ### add project [POST]
 
-+ Request (application/text)
++ Request (text/plain)
   + Body
   
             text/plain name of the project
 
-+ Response 222
++ Response 201
 
 ## Project management [/projects/{project}]
 
 ### delete project [DELETE]
 
-+ Response 222
++ Response 204
 
-## Project management [/projects/{project}/indexed]
+## Project metadata management [/projects/{project}/indexed]
 
 ### marks project as indexed [PUT]
 
@@ -174,3 +174,5 @@ OpenGrok RESTful API documentation. The following endpoints are accessible under
   + Body
   
             ["sc-2","sc-1"]
+            
+API
